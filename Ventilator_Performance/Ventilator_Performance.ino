@@ -27,8 +27,7 @@ const double TD = 0.0635;
 const double AT = M_PI * pow((TD/2), 2);
 // TODO: Definition? Air density in kg/m^3
 const double RHO_AIR = 1.225;
-// TODO: Definition? Air density in kg/m^3
-const double RHO_O2 = 1.331;
+
 // Conversion Factor from Pa to cmH20
 const double CONV_PA_CMH20 = 0.010197162129779;
 // Conversion factor from N to lbf 

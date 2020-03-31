@@ -1,0 +1,16 @@
+1: exit of the piston
+    if the pressure reading > Pinsp 
+        solenoid valve 1 open
+        once lung pressure reaches Pinsp, the sensor will read Pinsp
+            this causes the solenoid valve 1 to close
+            motor rotation is measured to find the displacement of the piston
+                gives us tidal volume (delta_h * AP)
+                Downward force of piston is equal to Pinsp * AP
+                Tells us how much torque is needed in the motor
+
+Refilling piston: flow from O2 tank and atmosphere occur simultaneously
+Ptank = Pinsp at beginning of refill
+    all pressures are above atmospheric
+    volume needed to fill up is delta_h * AP = TV
+        volume from O2 tank is delta_h * AP * FiO2 = TV * FiO2
+        volume from atmosphere is TV * (1-FiO2)
