@@ -6,6 +6,7 @@
  *             Pins are not determined.
  *             pExp may become a manual setting and not a user input.
  *             Display all potentiometer values and tidal volume.
+ *             Interrupt Syntax: attachInterrupt(digitalPinToInterrupt(pin), ISR, mode)
  */
 
 
