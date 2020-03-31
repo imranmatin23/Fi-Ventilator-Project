@@ -62,6 +62,7 @@ MOTOR_TORQUE = 1;
 SOLENOID_VALVE = 0;
 O2_SOLENOID_VALVE = 0;
 
+<< NEED TO DISPLAY TIDAL VOLUME >>
 
 void loop() {
     # Currnt state: solenoid valve is closed, motor torque is on, bag is inflated
@@ -123,4 +124,4 @@ void loop() {
         usleep(T_HOLD);
 
         # Solenoid valves are closed, motor torque off, bag is now fully inflated  
-}
+} Tidal Volume: 500 mL
