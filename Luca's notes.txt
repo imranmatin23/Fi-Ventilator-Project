@@ -53,8 +53,10 @@ f. Repeat steps c-e but have intermediate wait period to hold cycle
 g. T_STALL
 
 
-
+// library to cause program to sleep
 #include <unistd.h>
+
+
 
 pressure = 0;
 PINSP = 100;
@@ -107,7 +109,7 @@ void loop() {
 
         # Piston stops when the reference height is reached 
         h_air = delta_h - h_O2
-        V_PISTON = h_air / (Texp - T_SOL_O2 - T_HOLD)
+        V_PISTON = h_air / (Texp - T_SOL_O2 - T_STALL - T_HOLD)
 
         # Move in reverse direction at V_PISTON velocity
         MOTOR_TORQUE = -1; 
