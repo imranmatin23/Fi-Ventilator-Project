@@ -8,6 +8,8 @@
                 Downward force of piston is equal to Pinsp * AP
                 Tells us how much torque is needed in the motor
 
+T_STALL
+
 2: O2 Solenoid Valve
 
 Refilling piston: flow from O2 tank and atmosphere occur simultaneously
@@ -28,3 +30,97 @@ h_air = delta_h - h_O2
             volume from atmosphere is V_AIR = TV - V_O2
 
 # Definitive equations/process for O2 and Atmospheric Air into Piston
+
+
+
+# Control for Solenoid Valve
+# TODO: When to open solenoid valve (T_STALL), duration of time soleniod valve stays open (T_SOL_O2)
+
+# Control for exit of oxygen in piston chamber to paitent
+# Refer to spsuedocode in #1: exit of the piston
+# 
+
+
+
+a. Piston is full of air, no compression so no pressure (below Pinsp) applied on the sensor at the piston exit
+b. Motor applies torque, which applies force to piston, increasing pressure in the piston
+c. Once the pressure sensor below the piston reads larger than the Pinsp input, the solenoid valve is triggered and opened
+d. As air leaves piston, the pressure at the sensor drops drastically, but increases as lungs fill with air 
+e. As lungs fill up with air, pressure sensor reads and checks value until greater than or equal to Pinsp again (bc no pressure difference) and triggers the close for sol. valve
+f. When solenoid valve closes, motor stops applying torque.
+g. Wait perido
+f. Repeat steps c-e but have intermediate wait period to hold cycle 
+g. T_STALL
+
+
+
+#include <unistd.h>
+
+pressure = 0;
+PINSP = 100;
+MOTOR_TORQUE = 1;
+SOLENOID_VALVE = 0;
+O2_SOLENOID_VALVE = 0;
+
+
+void loop() {
+    # Currnt state: solenoid valve is closed, motor torque is on, bag is inflated
+
+    # read from analog pin the pressure 
+
+    if (pressure >= PINSP):
+        SOLENOID_VALVE = 1;
+
+        do {
+            # read from analog pin the pressure
+        } while (pressure < PINSP);
+
+        SOLENOID_VALVE = 0;
+        MOTOR_TORQUE = 0;
+        # Measurements needed: displacement of motor shaft to determine delta_h
+
+        # Stop for 100ms for motor to stop
+        sleep(100);
+
+        # Current state: solenooid valve is closed, motor torque is off, bag is compressed
+
+        # FiO2, delta_h and Q_SOL_O2 used to determine time that solenoid valve is open T_SOL_O2
+
+        T_SOL_O2 = V_O2 / Q_SOL_O2
+
+        if (T_SOL_O2 > 0) {
+            O2_SOLENOID_VALVE = 1;
+            
+            usnigned long startTime = micros();
+            
+            do {
+                unsigned long currTime = micros();
+                unsigned long timeElapsed = currTime - startTime;
+            } while (timeElapsed < T_SOL_O2);
+
+            O2_SOLENOID_VALVE = 0;
+        }
+
+        # Current state: All solenoid valves are closed, no motor torque, bag is inflated with O2
+
+        unsigned double T_HOLD = 100;
+
+        # Piston stops when the reference height is reached 
+        h_air = delta_h - h_O2
+        V_PISTON = h_air / (Texp - T_SOL_O2 - T_HOLD)
+
+        # Move in reverse direction at V_PISTON velocity
+        MOTOR_TORQUE = -1; 
+
+        do {
+            # read in MOTOR_POS 
+
+        } while (MOTOR_POS != 0); 
+
+        MOTOR_TORQUE = 0;
+
+        # Stop for 100ms for motor to stop
+        usleep(T_HOLD);
+
+        # Solenoid valves are closed, motor torque off, bag is now fully inflated  
+}
