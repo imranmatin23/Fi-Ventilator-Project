@@ -1,0 +1,28 @@
+# Force Sesnitive Resistor (FSR) - Thin sensor that detects physical pressure.
+
+Reading from a pressure sensor will be an analog input
+Define analog input pin
+More force --> less resistance  -- > more current/voltage
+Ex. To read in from FSR:
+    fsrReading = analogRead(fsrAnalogPin);
+Ex: To change analog to LED brightness
+    // we'll need to change the range from the analog reading (0-1023) down to the range
+    // used by analogWrite (0-255) with map!
+    LEDbrightness = map(fsrReading, 0, 1023, 0, 255);
+Ex. To change voltage/brightness of LED
+    analogWrite(LEDpin, LEDbrightness);
+
+
+# Motor Encoder
+    - DC vs AC (We are using DC)
+    - Rotary vs Linear Encoder (We are using rotary?)
+        - Rotary encoder is a device that converts the angular position or motion of a shaft or an axle to an analog or digital code. (rotary encoders track rotating shafts)
+        - Linear encoders track linear motion
+    - Incremental vs Absolute Encoder (Hopefully we are usinga an absolute encoder?)
+        - Incremental encoders. An incremental rotary encoder outputs pulses only while a motor is rotating. To determine the shaft position using an incremental encoder, you must know the starting position and the use external circuitry to count the number of output pulses.
+        - Absolute encoders. An absolute rotary encoder outputs a digital code corresponding to the rotation angle. There is no need to count pulses to know the position of the motor shaft. You need only read the digital output of the encoder.
+
+- Potential guide https://dronebotworkshop.com/rotary-encoders-arduino/
+- Want to precisely control movement: speed of motor/position of motor
+- Encoder converts motion or position to analog or digital signals
+- Standard Arduino Encoder Library: https://www.arduinolibraries.info/libraries/encoder
