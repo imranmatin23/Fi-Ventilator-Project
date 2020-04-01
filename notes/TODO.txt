@@ -13,4 +13,5 @@
  *             
  *             Hardware:
  *             2/3 LCD displays, 4 potentiometers, 2 pressure sensors, 1 buzzer, 1 DC motor with encoder, 2 solenoid valves
+ *             Alarms do not run during the whole program, only have specific checks at certain times
  */

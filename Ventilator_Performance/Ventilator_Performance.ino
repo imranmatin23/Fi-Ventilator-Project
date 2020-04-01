@@ -20,6 +20,7 @@ const int FIO2_PIN = A4;
 const int BPM_PIN = A5;
 const int PATIENT_PRESSURE_PIN = A6;
 const int EXP_PRESSURE_PIN = A7:
+const int BUZZER_PIN = A8;
 
 // Motor pins, Encoder object, and displacement tracker
 int en3and4 = 2;
@@ -57,6 +58,8 @@ int ieRatio = 0;
 int FiO2 = 0;
 // Initializing breaths per minute (respiratory rate)
 int bpm = 0;
+// expiratory pressure
+int expPressure = 0;
 
 
 // Inspiratory time
@@ -105,6 +108,18 @@ int noteDurations[] = {
   4, 8, 8, 4, 4, 4, 4, 4
 };
 
+// Alarm code
+bool pressureAlarm = 0;
+bool tidalAlarm = 0;
+// sum up all tidal volumes
+double tidalSum = 0;
+// current mins passed
+double countMin - 0;
+// store elapsed time
+double tidalTime = millis();
+
+
+
 
 // initialize the library with the numbers of the interface pins
 // Choose correct pins on arduino and LCD
@@ -129,6 +144,8 @@ void setup() {
   pinMode(IE_RATIO_PIN, INPUT);
   pinMode(FIO2_PIN, INPUT);
   pinMode(BPM_PIN, INPUT);
+
+  pinMode(BUZZER_PIN,OUTPUT);
 
   Serial.begin(9600);
  	Serial.println("Beginning program...");
@@ -192,15 +209,49 @@ void loop() {
 
     // close patient solenoid valve and turn off motor
     patientSolValve = 0;
+
+
+
+    // BEGIN EXHALATION
+    // Check expiratory pressure is not past threshold
+    // Min and Max pressure, if below or above send alarm
+    expPressure = analogRead(EXP_PRESSURE_PIN);
+    if (expPressure > 100) || (expPressure < 10) {
+      pressureAlarm = true;
+      tone(BUZZER_PIN,1000);
+    } else
+    {
+      pressureAlarm = false;
+    }
+    
+
+
+
   	// Stop motor
     digitalWrite(in3, LOW);
 	  digitalWrite(in4, LOW);
 
-    // TODO: Motor specifications unknown don't now if units for newPosition are correct
+    // Motor specifications unknown don't now if units for newPosition are correct
     // calculate delta_h displacement of motor shaft
     delta_h = newPosition;
     // calculate amount of air that entered lungs
     tidalVolume = calculateTidalVolume(delta_h);
+    tidalSum += tidalVolume;
+
+
+    // TIDAL VOLUME SUM ALARM CHECK
+    // time running is greater than 1 minute
+    if ((tidalTime - millis()) > 6000) {
+      if ((tidalSum > MAX) || (tidalSum < MIN)) {
+        tidalAlarm = true;
+        tone(BUZZER_PIN,1000);
+      } 
+      else {
+        tidalAlarm = false;
+      }
+      tidalTime = millis();
+    }
+
 
     // Display Tidal Volume
     lcd.setCursor(0, 0);
@@ -216,7 +267,7 @@ void loop() {
      */
 
 
-    // TODO: Confirm if need to transform value
+    // Confirm if need to transform value
     FiO2 = analogRead(FIO2_PIN);
 
     // Calculating height the piston moved
@@ -250,7 +301,8 @@ void loop() {
     // calculate velocity of piston for bringing the piston back to inital positon
     vPiston = calculateVPiston(delta_h, hO2, tSolO2, tExp);
 
-    // TODO: Move in reverse direction at vPiston velocity (Don't know how to change velocity)
+    // Move in reverse direction at vPiston velocity
+  	analogWrite(en3and4, vPiston);
     do {
           newPosition = myEnc.read();
           if (newPosition != oldPosition) {
