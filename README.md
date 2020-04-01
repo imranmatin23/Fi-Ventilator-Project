@@ -18,7 +18,9 @@ Here is a list of the electronical components that were necessary for this proje
 - Potentiometer Knobs
 - MAP Pressure Sensors
 - Alarm Buzzer
-- DC Motors with Encoders (H-Bridge motor controllor and external power source required)
+- DC Motors with Encoders
+- Motor Controller with H-Bridge
+- External power source (Battery Pack)
 - Solenoid Valves
 
 ## Interesting Notes about what was learned in this project on the Controls Sub-Team:
