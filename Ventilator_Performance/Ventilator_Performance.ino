@@ -2,19 +2,6 @@
  * Name: Ventilator_Preformance.ino
  * Authors: Luca Scotzniovsky, Clemente Guasch, Imran Matin
  * Description: This program contains the controller code for a ventilator.
- * TODO Notes: Motor specifications and pressure sensors unknown.
- *             Pins are not determined.
- *             Interrupt Syntax: attachInterrupt(digitalPinToInterrupt(pin), ISR, mode)
- *             Add support for 2nd pressure sensor.
- *             Alarms:
- *             Buzzer to sound alarm
- *             Button to deactive alarm or internally turned
- *             Display:
- *             Input: (4 potentiometers, 2 pressure sensor)
- *             Output: (4 potentiometers, 1 tidal volume)
- *             
- *             Hardware:
- *             2/3 LCD displays, 4 potentiometers, 2 pressure sensors, 1 buzzer, 1 DC motor with encoder, 2 solenoid valves
  */
 
 
@@ -22,6 +9,8 @@
 #include <math.h>
 // include the library code for LiquidCrystal display
 #include <LiquidCrystal.h>
+// include Encoder library to track motor displacement
+#include <Encoder.h>
 
 
 // Initalize pins for sensors and potentiometers
@@ -30,6 +19,19 @@ const int IE_RATIO_PIN = A3;
 const int FIO2_PIN = A4;
 const int BPM_PIN = A5;
 const int PATIENT_PRESSURE_PIN = A6;
+const int EXP_PRESSURE_PIN = A7:
+
+// Motor pins, Encoder object, and displacement tracker
+int en3and4 = 2;
+int in3 = 3;
+int in4 = 4;
+
+int encA = 5;
+int encB = 6;
+
+Encoder myEnc(encA, encB);
+long oldPosition = -999;
+long newPosition = -999;
 
 
 // Volume flow rate from the O2 chamber to piston in cm^3/sec
@@ -40,7 +42,7 @@ const double OD = 10.16;
 const double ID = 9.398; 
 // Cross-sectional Area of Piston in m^2
 const double AP = M_PI * pow(((OD + ID)/4), 2) * pow(10,-4);
-// TODO: Time to pause program for in microseconds, subject to change
+// Time to pause program for in microseconds, subject to change
 const int T_PAUSE = 100;
 
 
@@ -82,17 +84,30 @@ unsigned long startTime = 0;
 unsigned long currTime = 0;
 unsigned long timeElapsed = 0;
 
-
-// TODO
-// flag to handle motor torque, -1 = counterclockwise, 0 = stopped, 1 = clockwise
-// motor mechanics unknown, this is a temporary solution
-int motorflag = 0;
 // Distance that piston travels once the lungs have filled up
 double delta_h = 0;
 
+// Sound the alarm if patient in distress
+#define NOTE_C4  262
+#define NOTE_G3  196
+#define NOTE_A3  220
+#define NOTE_B3  247
+#define NOTE_C4  262
+
+
+// notes in the melody:
+int melody[] = {
+  NOTE_C4, NOTE_G3, NOTE_G3, NOTE_A3, NOTE_G3, 0, NOTE_B3, NOTE_C4
+};
+
+// note durations: 4 = quarter note, 8 = eighth note, etc.:
+int noteDurations[] = {
+  4, 8, 8, 4, 4, 4, 4, 4
+};
+
 
 // initialize the library with the numbers of the interface pins
-// TODO: Choose correct pins on arduino and LCD
+// Choose correct pins on arduino and LCD
 LiquidCrystal lcd(7,8,9,10,11,12);
 
 
@@ -107,12 +122,26 @@ void setup() {
 
   // Set patient pressure sensor pin to INPUT
   pinMode(PATIENT_PRESSURE_PIN, INPUT);
+  pinMode(EXP_PRESSURE_PIN, INPUT);
 
   // Set potentiometer knobs mode to INPUT 
   pinMode(PINSP_PIN, INPUT);
   pinMode(IE_RATIO_PIN, INPUT);
   pinMode(FIO2_PIN, INPUT);
   pinMode(BPM_PIN, INPUT);
+
+  Serial.begin(9600);
+ 	Serial.println("Beginning program...");
+  Serial.println("Set motor control pins...");
+	// Set all the motor control pins to outputs
+	pinMode(en3and4, OUTPUT);
+	pinMode(in3, OUTPUT);
+	pinMode(in4, OUTPUT);
+  
+  Serial.println("Turn motor off...");
+  // Turn off motors - Initial state
+ 	digitalWrite(in3, LOW);
+	digitalWrite(in4, LOW);
 }
 
 
@@ -124,9 +153,12 @@ void setup() {
 void loop() {
   // Sets the cursor to col 0 and row 0
   lcd.setCursor(0,0);
-  // start motor
-  motorflag = 1;
 
+	// Compress bag at max speed
+	analogWrite(en3and4, 255);
+  digitalWrite(in3, HIGH);
+	digitalWrite(in4, LOW);
+	
 
   /*
    * Current state: All solenoid valves closed, motor torque is on, bag is inflated
@@ -134,7 +166,7 @@ void loop() {
 
 
   // read in potentiometer analog input
-  // TODO: Confirm if need to transform value to match pInsp
+  // Confirm if need to transform value to match pInsp
   bpm = analogRead(BPM_PIN);
   ieRatio = analogRead(IE_RATIO_PIN);
   patientPressure = analogRead(PATIENT_PRESSURE_PIN);
@@ -160,11 +192,13 @@ void loop() {
 
     // close patient solenoid valve and turn off motor
     patientSolValve = 0;
-    motorflag = 0;
+  	// Stop motor
+    digitalWrite(in3, LOW);
+	  digitalWrite(in4, LOW);
 
-    // TODO: Motor specifications unknown
+    // TODO: Motor specifications unknown don't now if units for newPosition are correct
     // calculate delta_h displacement of motor shaft
-
+    delta_h = newPosition;
     // calculate amount of air that entered lungs
     tidalVolume = calculateTidalVolume(delta_h);
 
@@ -216,17 +250,19 @@ void loop() {
     // calculate velocity of piston for bringing the piston back to inital positon
     vPiston = calculateVPiston(delta_h, hO2, tSolO2, tExp);
 
-    // TODO: Move in reverse direction at vPiston velocity
-    // motorflag = -1;
-    // motorVelocity = vPiston;
+    // TODO: Move in reverse direction at vPiston velocity (Don't know how to change velocity)
+    do {
+          newPosition = myEnc.read();
+          if (newPosition != oldPosition) {
+              oldPosition = newPosition;
+              Serial.print("New Position: ");
+              Serial.println(newPosition);
+          }
+    } while (newPosition == 0);
 
-    // Continue moving piston until reaches inital position
-    // do {
-    //   motorPos = analogRead(MOTOR_POS_PIN);
-    // } while (motorPos != 0); 
-
-    // Turn motor off
-    // motorflag = 0;
+   	// Stop motor
+    digitalWrite(in3, LOW);
+	  digitalWrite(in4, LOW);
 
     delay(T_PAUSE);
 

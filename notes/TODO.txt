@@ -1,0 +1,16 @@
+/* 
+ * Name: Ventilator_Preformance.ino
+ * Authors: Luca Scotzniovsky, Clemente Guasch, Imran Matin
+ * Description: This program contains the controller code for a ventilator.
+ * TODO Notes: Fix motor code
+ *             Add support for 2nd pressure sensor.
+ *             Alarms:
+ *             Buzzer to sound alarm
+ *             Button to deactive alarm or internally turned
+ *             Display:
+ *             Input: (4 potentiometers, 2 pressure sensor)
+ *             Output: (4 potentiometers, 1 tidal volume)
+ *             
+ *             Hardware:
+ *             2/3 LCD displays, 4 potentiometers, 2 pressure sensors, 1 buzzer, 1 DC motor with encoder, 2 solenoid valves
+ */
