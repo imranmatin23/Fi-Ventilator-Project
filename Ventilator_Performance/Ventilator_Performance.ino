@@ -4,9 +4,17 @@
  * Description: This program contains the controller code for a ventilator.
  * TODO Notes: Motor specifications and pressure sensors unknown.
  *             Pins are not determined.
- *             pExp may become a manual setting and not a user input.
- *             Display all potentiometer values and tidal volume.
  *             Interrupt Syntax: attachInterrupt(digitalPinToInterrupt(pin), ISR, mode)
+ *             Add support for 2nd pressure sensor.
+ *             Alarms:
+ *             Buzzer to sound alarm
+ *             Button to deactive alarm or internally turned
+ *             Display:
+ *             Input: (4 potentiometers, 2 pressure sensor)
+ *             Output: (4 potentiometers, 1 tidal volume)
+ *             
+ *             Hardware:
+ *             2/3 LCD displays, 4 potentiometers, 2 pressure sensors, 1 buzzer, 1 DC motor with encoder, 2 solenoid valves
  */
 
 
@@ -18,7 +26,6 @@
 
 // Initalize pins for sensors and potentiometers
 const int PINSP_PIN = A1;
-const int PEXP_PIN = A2;
 const int IE_RATIO_PIN = A3;
 const int FIO2_PIN = A4;
 const int BPM_PIN = A5;
@@ -42,8 +49,6 @@ const int T_PAUSE = 100;
  */
 // Initializing inspiratory pressure
 int pInsp = 0;
-// Initializing expiratory pressure
-int pExp = 0;
 // Initializing insp-exp ratio (E/I)
 int ieRatio = 0;
 // Initializing oxygen fraction (lowest is at 21% for pure air) (Fraction of inspired oxygen)
@@ -105,7 +110,6 @@ void setup() {
 
   // Set potentiometer knobs mode to INPUT 
   pinMode(PINSP_PIN, INPUT);
-  pinMode(PEXP_PIN, INPUT);
   pinMode(IE_RATIO_PIN, INPUT);
   pinMode(FIO2_PIN, INPUT);
   pinMode(BPM_PIN, INPUT);
