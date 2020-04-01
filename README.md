@@ -1,14 +1,11 @@
 # Fi-Ventilator-Project
-This project was in response to the [Code Life Ventilator Challenge](https://www.agorize.com/en/challenges/code-life-challenge?t=nlalEJjOc1pDmRCro-y3JA) by Agorize. <br />
-The project opened on March 20th, 2020 and closed on March 31st, 2020. <br />
-The goal was to design a low-cost, simple, easy-to-use and easy-to-build ventilator that can serve the COVID patients, in an emergency timeframe. <br />
-Our team, Fi@UCSD Ventilator Team, consisted of a team of 11 members: Evan Kay, Micheal Arellano, Imran Matin, Clemente Guasch, Clara Romero, Kody Harris, Dayan Khandawa, Marcin Kierebinski, Luca Scotzniovsky, Shan Hannadige, and Kalpa Semashinghe. <br />
-<br />
-Our team was split into three subteams: Ventilator, Sensors and Flow Components, and Controls. <br />
-The final cost of our standalone ventilator was $170.67. <br />
+This project was in response to the [Code Life Ventilator Challenge](https://www.agorize.com/en/challenges/code-life-challenge?t=nlalEJjOc1pDmRCro-y3JA) by Agorize. The project opened on March 20th, 2020 and closed on March 31st, 2020. The goal was to design a low-cost, simple, easy-to-use and easy-to-build ventilator that can serve the COVID patients, in an emergency timeframe.
+
+Our team, Fi@UCSD Ventilator Team, consisted of a team of 11 members: Evan Kay, Micheal Arellano, Imran Matin, Clemente Guasch, Clara Romero, Kody Harris, Dayan Khandawa, Marcin Kierebinski, Luca Scotzniovsky, Shan Hannadige, and Kalpa Semashinghe. Our team was split into three subteams: Ventilator, Sensors and Flow Components, and Controls. The final cost of our standalone ventilator was $170.67.
 
 ## Controls Sub-Team
-This repository was designed and implemented by the Controls Sub-Team consisting of Luca Sctozniovsky, Clemente Guasch, and Imran Matin.<br />
+This repository was designed and implemented by the Controls Sub-Team consisting of Luca Sctozniovsky, Clemente Guasch, and Imran Matin.
+
 Here is a list of the electronical components that were necessary for this project:
 - Arduino Microcontroller
 - Arduino Breadboard
