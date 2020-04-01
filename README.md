@@ -4,7 +4,7 @@ This project was in response to the [Code Life Ventilator Challenge](https://www
 Our team, Fi@UCSD Ventilator Team, consisted of a team of 11 members: Evan Kay, Micheal Arellano, Imran Matin, Clemente Guasch, Clara Romero, Kody Harris, Dayan Khandawa, Marcin Kierebinski, Luca Scotzniovsky, Shan Hannadige, and Kalpa Semashinghe. Our team was split into three subteams: Ventilator, Sensors and Flow Components, and Controls. The final cost of our standalone ventilator was $170.67.
 
 ## Controls Sub-Team
-This repository was designed and implemented by the Controls Sub-Team consisting of Luca Sctozniovsky, Clemente Guasch, and Imran Matin.
+This repository was designed and implemented by the Controls Sub-Team consisting of Luca Sctozniovsky, Clemente Guasch, and Imran Matin. The main functionality of the controls system is to handle user and sensor input to specify how air is transmitted to the patient. It takes in user input from potentiometer knobs and displays those values onto the LCD displays. It also handles the motors for the bellow compression and decompression. It also handles the pressure sensors that read in the pressure in the bellow and expiratory pressure. It also handles the opening and closing of solenoid valves to allow for the passage of air to the user. It also has the capability to sound an alarm if critical situations for the patient occur. The electrical (wiring) and software components of the ventilator were handled by this team.
 
 Here is a list of the electronical components that were necessary for this project:
 - Arduino Microcontroller
