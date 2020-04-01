@@ -20,6 +20,8 @@ Here is a list of the electronical components that were necessary for this proje
 - External power source (Battery Pack)
 - Solenoid Valves
 
+The main .ino file that contains the control code for the ventilator is not complete or tested.
+
 ## Interesting Notes about what was learned in this project on the Controls Sub-Team:
 - Analog values are from 0 to 1023
 - Digital valus are from 0 to 255 (or HIGH and LOW)
