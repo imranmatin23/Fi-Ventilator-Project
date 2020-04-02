@@ -16,7 +16,7 @@ Here is a list of the electronical components that were necessary for this proje
 - MAP Pressure Sensors
 - Alarm Buzzer
 - DC Motors with Encoders
-- Arduino 16-pin L293D Motor Driver IC
+- Arduino 16-pin L293D (Dual H-Bridge) Motor Driver IC
 - External power source (Battery Pack)
 - Solenoid Valves
 
@@ -68,5 +68,5 @@ The main .ino file that contains the control code for the ventilator is not comp
 ## Wired Fi-Ventilator Circuit Diagram
 <img src="images/Wired Fi-Ventilator Circut Diagram.png">
 
-## Functional Block Diagram for 1 DC Motor with an Encoder, H-Bridge, Arduino 16-pin L293D Motor Driver IC, and a Microcontroller
+## Functional Block Diagram for 1 DC Motor with an Encoder, Arduino 16-pin L293D (Dual H-Bridge) Motor Driver IC, and a Microcontroller
 <img src="images/motor_circuit_diagram.png">
