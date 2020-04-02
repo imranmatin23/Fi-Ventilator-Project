@@ -1,5 +1,5 @@
 # Fi-Ventilator-Project
-This project was in response to the [Code Life Ventilator Challenge](https://www.agorize.com/en/challenges/code-life-challenge?t=nlalEJjOc1pDmRCro-y3JA) by Agorize. The project opened on March 18th, 2020 and closed on March 31st, 2020. The goal was to design a low-cost, simple, easy-to-use and easy-to-build ventilator that can serve the COVID patients, in an emergency timeframe.
+This project was in response to the [Code Life Ventilator Challenge](https://www.agorize.com/en/challenges/code-life-challenge?t=nlalEJjOc1pDmRCro-y3JA) by Agorize. The project opened on March 18th, 2020 and closed on March 31st, 2020. The goal was to design a low-cost, simple, easy-to-use and easy-to-build ventilator that can serve the COVID-19 patients, in an emergency timeframe.
 
 Our team, Fi@UCSD Ventilator Team, consisted of a team of 11 members: Evan Kay, Micheal Arellano, Imran Matin, Clemente Guasch, Clara Romero, Kody Harris, Dayan Khandawa, Marcin Kierebinski, Luca Scotzniovsky, Shan Hannadige, and Kalpa Semashinghe. Our team was split into three subteams: Ventilator, Sensors and Flow Components, and Controls. The final cost of our standalone ventilator was $170.67.
 
@@ -16,7 +16,7 @@ Here is a list of the electronical components that were necessary for this proje
 - MAP Pressure Sensors
 - Alarm Buzzer
 - DC Motors with Encoders
-- Motor Controller with H-Bridge
+- Arduino 16-pin L293D Motor Driver IC
 - External power source (Battery Pack)
 - Solenoid Valves
 
@@ -62,12 +62,11 @@ The main .ino file that contains the control code for the ventilator is not comp
 ## System Block Diagram
 <img src="images/System Block Diagram.png">
 
-
 ## Labeled Fi-Ventilator Circuit Diagram
 <img src="images/Fi-Ventilator Circuit Diagram.png">
 
 ## Wired Fi-Ventilator Circuit Diagram
 <img src="images/Wired Fi-Ventilator Circut Diagram.png">
 
-## Functional Block Diagram for 1 DC Motor with an Encoder, H-Bridge, Arduino L293D Motor Controller, and a Microcontroller
+## Functional Block Diagram for 1 DC Motor with an Encoder, H-Bridge, Arduino 16-pin L293D Motor Driver IC, and a Microcontroller
 <img src="images/motor_circuit_diagram.png">
