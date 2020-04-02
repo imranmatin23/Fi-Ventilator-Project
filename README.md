@@ -68,3 +68,6 @@ The main .ino file that contains the control code for the ventilator is not comp
 
 ## Wired Fi-Ventilator Circuit Diagram
 <img src="images/Wired Fi-Ventilator Circut Diagram.png">
+
+## Functional Block Diagram for 1 DC Motor with an Encoder, H-Bridge, Arduino L293D Motor Controller, and a Microcontroller
+<img src="images/motor_circuit_diagram.png">
